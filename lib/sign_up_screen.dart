@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'home.dart';
 
 class SinupScreen extends StatefulWidget {
   const SinupScreen({super.key});
@@ -9,6 +10,21 @@ class SinupScreen extends StatefulWidget {
 }
 
 class _SinupScreenState extends State<SinupScreen> {
+  @override
+  void dispose() {
+    namecontroller.dispose();
+    emailcontroller.dispose();
+    fromKey.currentState?.dispose();
+    passwordcontroller.dispose();
+    super.dispose();
+  }
+
+  TextEditingController namecontroller = TextEditingController();
+  TextEditingController emailcontroller = TextEditingController();
+  TextEditingController passwordcontroller = TextEditingController();
+  bool ispass = true;
+  bool ischeck = true;
+  final fromKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,16 +72,17 @@ class _SinupScreenState extends State<SinupScreen> {
               ),
             ),
 
-            Gap(80),
+            Gap(40),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Name",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
                 Gap(10),
                 TextField(
+                  controller: namecontroller,
                   decoration: const InputDecoration(
                     hintText: 'Type something longer here...',
                     border: OutlineInputBorder(
@@ -75,17 +92,18 @@ class _SinupScreenState extends State<SinupScreen> {
                 ),
               ],
             ),
-            Gap(10),
+            Gap(15),
 
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Email",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
                 Gap(10),
                 TextField(
+                  controller: emailcontroller,
                   decoration: const InputDecoration(
                     hintText: 'Email',
                     suffix: Icon(Icons.check, color: Colors.green),
@@ -96,26 +114,79 @@ class _SinupScreenState extends State<SinupScreen> {
                 ),
               ],
             ),
-            Gap(10),
+            Gap(15),
 
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Password",
-                  style: TextStyle(fontSize: 16, color: Colors.black),
+                  style: TextStyle(fontSize: 14, color: Colors.black),
                 ),
                 Gap(10),
                 TextField(
-                  
-                  decoration: const InputDecoration(
+                  obscureText: ispass,
+                  controller: passwordcontroller,
+                  decoration: InputDecoration(
                     hintText: 'Password',
-                    suffix: Icon(Icons.visibility),
+                    suffix: InkWell(
+                      onTap: () {
+                        ispass = !ispass;
+                        setState(() {});
+                      },
+                      child: Icon(
+                        ispass ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    ),
                     border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                   ),
                 ),
+                Gap(10),
+                Row(
+                  children: [
+                    Checkbox(
+                      activeColor: Colors.blue,
+                      value: ischeck,
+                      onChanged: (value) {
+                        setState(() {
+                          ischeck = value!;
+                        });
+                      },
+                    ),
+                    Text(
+                      "Agree the terms of use and privacy policy",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ),
+                Gap(30),
               ],
             ),
           ],

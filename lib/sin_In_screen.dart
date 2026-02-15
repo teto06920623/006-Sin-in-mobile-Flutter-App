@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:log_app/home.dart';
+import 'forgotingpass.dart';
 
 class SinInScreen extends StatefulWidget {
   const SinInScreen({super.key});
@@ -11,6 +13,9 @@ class SinInScreen extends StatefulWidget {
 }
 
 class _SinInScreenState extends State<SinInScreen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool ispassvald = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +73,7 @@ class _SinInScreenState extends State<SinInScreen> {
                 ),
                 Gap(10),
                 TextField(
+                  controller: emailController,
                   decoration: const InputDecoration(
                     hintText: 'Email',
                     suffix: Icon(Icons.check, color: Colors.green),
@@ -88,9 +94,19 @@ class _SinInScreenState extends State<SinInScreen> {
                 ),
                 Gap(10),
                 TextField(
-                  decoration: const InputDecoration(
+                  controller: passwordController,
+                  obscureText: ispassvald,
+                  decoration: InputDecoration(
                     hintText: 'Password',
-                    suffix: Icon(Icons.visibility),
+                    suffix: InkWell(
+                      onTap: () {
+                        ispassvald = !ispassvald;
+                        setState(() {});
+                      },
+                      child: Icon(
+                        ispassvald ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
@@ -102,22 +118,40 @@ class _SinInScreenState extends State<SinInScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text(
-                  "Forgot password?",
-                  style: TextStyle(color: Color(0xFFF78720)),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Forgotingpas()),
+                      );
+                    });
+                  },
+                  child: Text(
+                    "Forgot password?",
+                    style: TextStyle(color: Color(0xFFF78720)),
+                  ),
                 ),
                 Gap(10),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Sign In",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Home()),
+                    );
+                  },
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
